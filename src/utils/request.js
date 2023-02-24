@@ -13,11 +13,36 @@ service.interceptors.request.use(// 请求拦截器
 )
 service.interceptors.response.use(// 响应拦截器
     response => {
+        // console.log(response); //
+         // axios默认加了一层data,所以这个response就是axios包装之后的数据
         const { success, message, data } = response.data
+        // console.log('success:', + success);
+        // console.log('message:', message);
+        // console.log('data):', data);
         // 根据success的成功与否决定下面的操作
+        if(success) {
+            return data //直接返回data，不给数据包裹(即数据处理，比如转换为json格式等。)。
+        }else{
+            Messsge.error(message) //提示错误消息
+            // Promise其实是一个构造函数，它有resolve，reject，race等静态方法;它的原型（prototype）上有then，catch方法
+            // 一个 Promise 必然处于以下几种状态之一：
+            //     待定（pending）：初始状态，既没有被兑现，也没有被拒绝。
+            //     已兑现（fulfilled）：意味着操作成功完成。
+            //     已拒绝（rejected）：意味着操作失败。
+            return Promise.reject(new Error(message)) //如果请求正常，但是参数错误，success为false，通过reject，传递message
+                                                    // success为false--举例：   1、手机号或者密码写错，服务器的success为false
+                                                    //         2、请求参数未传，比如loginForm，写成loginFrom
+                                                    //         3、请求参数名写错，比如password写成pasword
+                                                    // 请求错误--举例：     1、路径写错  --此时可能服务器还会返回数据，并且success为false，但是状态码错误，会直接走response拦截器的error回调，就是下面的代码
+                                                
+        }           
+    },error => {
+        Message.error(error.message) // 提示错误信息
+        return Promise.reject(error) // 返回执行错误 让当前的执行链跳出成功，通过reject，传递error，并触发catch（登录页面的登录方法里的登陆失败catch）
+        // catch (e)是用来捕获错误的
     }
 )
-export default service // 导出axios实例
+export default service // 导出新axios实例
 
 // // 1、创建axios实例
 // // 1.1 引入axios

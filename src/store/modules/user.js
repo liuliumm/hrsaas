@@ -60,14 +60,16 @@ const actions = {
   async login(context, data) {
     //注意这个login是从api/user.js中导入的
     const result = await loginApi(data) // 实际上就是一个promise  result就是执行的结果
+    // 经过响应拦截器的处理之后 这里的result实际上就是 token
     // 为什么async/await 不用返回new Promise,因为 async函数本身就是 Promise,promise的值返回的值  
     // axios默认给数据加了一层data
-    if (result.data.success) {
-      // 表示登录接口调用成功 也就是意味着你的用户名和密码是正确的
-      // 现在有用户token
-      // actions 修改state 必须通过mutations
-      context.commit('setToken', result.data.data)
-    }
+    // if (result.data.success) {
+    //   // 表示登录接口调用成功 也就是意味着你的用户名和密码是正确的
+    //   // 现在有用户token
+    //   // actions 修改state 必须通过mutations
+    //   context.commit('setToken', result.data.data)
+    // }
+    context.commit('setToken', result)
   },
   // 上述代码中，使用了async/await语法,用then语法也是可以的,在项目研发过程中，尽可能的采用前一种
   // login(context, data) {
