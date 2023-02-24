@@ -5,7 +5,7 @@ export default {
   actions: {}
 }
 // 对登录接口进行封装
-export function login(data) {
+export function loginApi(data) {
   // 返回一个axios对象 => promise  // 返回了一个promise对象
   return request({
     url: '/sys/login',  
