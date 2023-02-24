@@ -1,3 +1,4 @@
+// **`vue.config.js`**的改动如果要生效,需要进行重启服务
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
@@ -35,9 +36,25 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    }
+    },
     // 注释掉
     // before: require('./mock/mock-server.js')
+    // 注释掉 mock的加载，因为mock-server会导致代理服务的异常
+
+    // 代理配置
+    proxy: {
+      // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
+      '/api': {
+        target: 'http://ihrm-java.itheima.net/', // 跨域请求的地址,我们要代理的地址
+        changeOrigin: true // 只有这个值为true的情况下 才表示开启跨域,才可以让本地服务代理我们发出请求
+        //路径重写
+        //pathRewrite:{} //此时不需要，，我们并没有进行**`pathRewrite`**,因为后端接口就是**`ihrm.itheima.net/api`**这种格式,所以不需要重写
+        // 例子：
+        // pathRewrite: {
+        //   '^/api': '' //将/api改为空， 假设我们想把 localhost:8888/api/login 变成www.baidu.com/login 就需要这么做 
+        // }
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
