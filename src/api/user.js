@@ -4,8 +4,14 @@ export default {
   mutations: {},
   actions: {}
 }
+// 对登录接口进行封装
 export function login(data) {
-
+  // 返回一个axios对象 => promise  // 返回了一个promise对象
+  return request({
+    url: '/sys/login',  
+    method: 'post',
+    data
+  })
 }
 
 export function getInfo(token) {
