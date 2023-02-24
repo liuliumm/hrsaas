@@ -24,6 +24,7 @@ const mutations = {
   setToken(state, token) {
   // SET_TOKEN: (state, token) => { 
     state.token = token // 设置token  只是修改state的数据  123 =》 1234
+    // vuex变化 => 缓存数据
     setToken(token) // vuex和 缓存数据的同步(注意这个setToken是从auth.js导入的)
   },
   // SET_NAME: (state, name) => {
@@ -43,19 +44,42 @@ const mutations = {
 // 登录action要做的事情，**`调用登录接口`**，**`成功后设置token到vuex`**，**`失败则返回失败`**
 const actions = {
   // user login  // 定义login action  也需要参数 调用action时 传递过来的参数
-  loginApi({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  // login({ commit }, userInfo) {
+  //   const { username, password } = userInfo
+  //   return new Promise((resolve, reject) => {
+  //     loginApi({ username: username.trim(), password: password }).then(response => {
+  //       const { data } = response
+  //       commit('SET_TOKEN', data.token)
+  //       setToken(data.token)
+  //       resolve()
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
+  async login(context, data) {
+    //注意这个login是从api/user.js中导入的
+    const result = await loginApi(data) // 实际上就是一个promise  result就是执行的结果
+    // 为什么async/await 不用返回new Promise,因为 async函数本身就是 Promise,promise的值返回的值  
+    // axios默认给数据加了一层data
+    if (result.data.success) {
+      // 表示登录接口调用成功 也就是意味着你的用户名和密码是正确的
+      // 现在有用户token
+      // actions 修改state 必须通过mutations
+      context.commit('setToken', result.data.data)
+    }
   },
+  // 上述代码中，使用了async/await语法,用then语法也是可以的,在项目研发过程中，尽可能的采用前一种
+  // login(context, data) {
+  //   return new Promise(function(resolve) {
+  //     login(data).then(result => {
+  //       if (result.data.success) {
+  //         context.commit('setToken',  result.data.data) // 提交mutations设置token
+  //         resolve()  // 表示执行成功了
+  //       }
+  //     })
+  //   })
+  // },
 
   // get user info
   getInfo({ commit, state }) {
