@@ -81,7 +81,7 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
-import { mapActions } from "vuex"; // 引入vuex的辅助函数
+import { mapActions } from "vuex"; // 1\引入vuex的辅助函数
 export default {
   name: "Login",
   data() {
@@ -99,7 +99,7 @@ export default {
     };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+        callback(new Error("密码不能少于6位"));
       } else {
         callback();
       }
@@ -136,7 +136,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["user/login"]),
+    ...mapActions(["user/login"]),  //2\引入action方法
   },
   watch: {
     $route: {
@@ -158,13 +158,17 @@ export default {
       });
     },
     handleLogin() {
+      // 3\调用登录
       this.$refs.loginForm.validate(async (isOK) => {
         if (isOK) {
           try {
             this.loading = true;
             // this.$store.dispatch('user/login', this.loginForm).then(() => {
+              // 3.1\校验通过 调用action
             await this["user/login"](this.loginForm); //调用的是Vuex中子模块的action，该模块我们进行了namespaced: true，
+                                                        // 所以引用aciton时需要带上`user/`, 并且在使用该方法时，直接使用 `this['user/login']`  ----使用this.user/login 语法是错误的
             // this.$router.push({ path: this.redirect || '/' })
+            // 3.2\登录成功之后
             this.$router.push("/");
             // this.loading = false
             // }).catch(() => {
@@ -176,7 +180,7 @@ export default {
             //   console.log('error submit!!')
             //   return false
           } finally {
-            //  不论执行try 还是catch  都去关闭转圈
+            //  3.3\不论执行try 还是catch  都去关闭转圈
             this.loading = false;
           }
         }
