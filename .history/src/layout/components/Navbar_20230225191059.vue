@@ -146,18 +146,7 @@ export default {
           width: 40px;
           height: 40px;
           border-radius: 10px;
-          vertical-align: middle;
         }
-
-        .name {
-          color: #fff;
-          vertical-align: middle;
-          margin-left:5px;
-        }
-        
-        .user-dropdown {
-          color: #fff;
-         }
 
         .el-icon-caret-bottom {
           cursor: pointer;
