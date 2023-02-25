@@ -16,15 +16,3 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
-
-// 准备一下时间戳，处理token超时问题，该代码是在注入token后执行，
-const timeKey = 'hrsaas-timestamp-key' // 设置一个独一无二的key
-
-// 获取时间戳
-export function getTimeStamp() {
-  return Cookies.get(timeKey)
-}
-// 设置时间戳
-export function setTimeStamp() {
-  Cookies.set(timeKey, Date.now()) //时间戳就是当前具体时间，所以设置的时间戳的值就是now
-}
