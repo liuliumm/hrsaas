@@ -33,8 +33,7 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    // 关闭项目启动自动打开浏览器
-    open: false,
+    open: true,
     overlay: {
       warnings: false,
       errors: true
@@ -44,10 +43,10 @@ module.exports = {
     // 注释掉 mock的加载，因为mock-server会导致代理服务的异常
 
     // 代理配置
-proxy: {
-    // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
+    proxy: {
+      // 当我们的本地的请求 有/api的时候，就会代理我们的请求地址向另外一个服务器发出请求
       '/api': {
-        target: 'http://ihrm-java.itheima.net/', // 跨域请求的地址,我们(vue-cli)要代理的地址
+        target: 'http://ihrm-java.itheima.net/', // 跨域请求的地址,我们要代理的地址
         changeOrigin: true // 只有这个值为true的情况下 才表示开启跨域,才可以让本地服务代理我们发出请求
         //路径重写
         //pathRewrite:{} //此时不需要，，我们并没有进行**`pathRewrite`**,因为后端接口就是**`ihrm.itheima.net/api`**这种格式,所以不需要重写

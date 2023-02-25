@@ -15,7 +15,7 @@
         </h3>
       </div>
       <!-- 校验属性 -->
-      <!-- :rules="loginRules"通过prop， -->
+      :rules="loginRules"通过prop，
       <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -138,6 +138,9 @@ export default {
       redirect: undefined,
     };
   },
+  methods: {
+    ...mapActions(["user/login"]),  //2\引入action方法
+  },
   watch: {
     $route: {
       handler: function (route) {
@@ -147,7 +150,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['user/login']),  //2\引入action方法
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";

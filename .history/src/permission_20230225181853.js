@@ -4,7 +4,7 @@ import store from './store'  //引入 vuex store 实例
 // import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar引入一份进度条插件
 import 'nprogress/nprogress.css' // progress bar style引入进度条样式
-// import { indexOf } from 'core-js/core/array'
+import { indexOf } from 'core-js/core/array'
 // import { getToken } from '@/utils/auth' // get token from cookie
 // import getPageTitle from '@/utils/get-page-title'
 
@@ -16,7 +16,7 @@ router.beforeEach(async (to, from, next) => {
     //   start progress bar   开启进度条
     NProgress.start()
     if (store.getters.token) {
-        if (to.path === '/login') {  // 这里会导致用户不用二次登录，只要token还在有效期，可以直接跳转到主页，而不用再次点击登录
+        if (to.path === '/login') {
             next({ path: '/' }) //跳到主页
             NProgress.done()
         } else {    // ？？？ why
@@ -30,8 +30,7 @@ router.beforeEach(async (to, from, next) => {
         }
     }
     // 解决手动切换地址时，进度条不关闭的问题
-    // NProgress.done()   // 手动强制关闭，
-
+    NProgress.done()   // 手动强制关闭，
     router.afterEach(() => {
         // finish progress bar
         NProgress.done()

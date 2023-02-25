@@ -2,19 +2,18 @@ import { loginApi, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
-
-// const getDefaultState = () => {  //初始化时生成的
-//   return {
-//     token: getToken(),
-//     name: '',
-//     avatar: ''
-//   }
-// }
-// const state = getDefaultState(
+const getDefaultState = () => {
+  return {
+    token: getToken(),
+    name: '',
+    avatar: ''
+  }
+}
 // 状态
 // 初始化的时候从缓存中读取状态 并赋值到初始化的状态上
-// Vuex的持久化 如何实现 ？ Vuex和前端缓存相结合)
-const state = {  //在这里设置token为共享状态，初始化vuex时，先从缓存中读取
+// Vuex的持久化 如何实现 ？ Vuex和前端缓存相结合
+// const state = getDefaultState()
+const state = {
   token: getToken() // 设置token初始状态   token持久化 => 放到缓存中
 }
 // 修改状态
@@ -23,8 +22,7 @@ const mutations = {
   //   Object.assign(state, getDefaultState())
   // },
   setToken(state, token) {
-  // SET_TOKEN: (state, token) => {
-    // 将数据同步给token 
+  // SET_TOKEN: (state, token) => { 
     state.token = token // 设置token  只是修改state的数据  123 =》 1234
     // vuex变化 => 缓存数据
     setToken(token) // vuex和 缓存数据的同步(注意这个setToken是从auth.js导入的)

@@ -15,7 +15,6 @@
         </h3>
       </div>
       <!-- 校验属性 -->
-      <!-- :rules="loginRules"通过prop， -->
       <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -86,7 +85,7 @@ import { mapActions } from "vuex"; // 1\引入vuex的辅助函数
 export default {
   name: "Login",
   data() {
-    // 自定义校验函数        //校验规则，值，回调函数
+    // 自定义校验函数
     const validateMobile = (rule, value, callback) => {
       //注意校验函数是定义在data函数内部，return前边的外边 *****
       // 校验value
@@ -106,13 +105,11 @@ export default {
       }
     };
     return {
-      // 表单数据
       loginForm: {
         mobile: "13800000002", // 修改默认手机号
         password: "123456", //默认密码改为123456
       },
       // 需要注意：loginRules的字段名必须与loginForm的字段名保持一致
-      // 表单校验规则
       loginRules: {
         //validator是自定义校验器，可以使用正则来校验
         mobile: [
@@ -129,7 +126,7 @@ export default {
             min: 6,
             max: 16,
             message: "密码的长度在6-16位之间 ",
-            trigger: "blur", //blur失去焦点
+            trigger: "blur",
           },
         ],
       },
@@ -137,6 +134,9 @@ export default {
       passwordType: "password",
       redirect: undefined,
     };
+  },
+  methods: {
+    ...mapActions(["user/login"]),  //2\引入action方法
   },
   watch: {
     $route: {
@@ -147,7 +147,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['user/login']),  //2\引入action方法
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -190,7 +189,7 @@ export default {
   },
 };
 </script>
-// 公共样式，不是私有，其他页面也可以访问
+
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */

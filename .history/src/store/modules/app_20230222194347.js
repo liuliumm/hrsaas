@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie'
 
 const state = {
-  // 桌面的状态保持
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false

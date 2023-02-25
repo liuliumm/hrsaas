@@ -30,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
         }
     }
     // 解决手动切换地址时，进度条不关闭的问题
-    // NProgress.done()   // 手动强制关闭，
+    NProgress.done()   // 手动强制关闭，
 
     router.afterEach(() => {
         // finish progress bar

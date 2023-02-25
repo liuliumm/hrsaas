@@ -16,8 +16,8 @@ router.beforeEach(async (to, from, next) => {
     //   start progress bar   开启进度条
     NProgress.start()
     if (store.getters.token) {
-        if (to.path === '/login') {  // 这里会导致用户不用二次登录，只要token还在有效期，可以直接跳转到主页，而不用再次点击登录
-            next({ path: '/' }) //跳到主页
+        if (to.path === '/login') {
+            next({ path: '' }) //跳到主页
             NProgress.done()
         } else {    // ？？？ why
             next() // 直接放行

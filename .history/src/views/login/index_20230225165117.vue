@@ -138,6 +138,9 @@ export default {
       redirect: undefined,
     };
   },
+  methods: {
+    ...mapActions(["user/login"]),  //2\引入action方法
+  },
   watch: {
     $route: {
       handler: function (route) {
@@ -147,7 +150,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['user/login']),  //2\引入action方法
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";

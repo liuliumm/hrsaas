@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // reset.css:改革派
-// normalize.css:
+normalize.css:
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
