@@ -101,7 +101,7 @@ const actions = {
     // context.commit('setUserInfo', result) // 将整个的个人信息设置到用户的vuex数据中
     // return result //这里为什么要返回，为后面埋下伏笔
     const baseInfo = await getUserDetailById(result.userId) //获取头像
-    const baseResult = { ...result, ...baseInfo, }  //合并接口结果
+    const baseResult = { ...baseInfo, ...result}  //合并接口结果
     context.commit('setUserInfo', baseResult) // 提交给mutations
     // return baseResult  点睛之笔
   },
@@ -125,27 +125,19 @@ const actions = {
   //   })
   // },
 
-  // 登出的action（写在actions中）
-  logout(context) {
-    // 删除token
-    context.commit('removeToken') // 不仅仅删除了vuex中的 还删除了缓存中的
-    // 删除用户资料
-    context.commit('removeUserInfo') // 删除用户信息
-  },
-
   // user logout
-  // logout({ commit, state }) {
-  //   return new Promise((resolve, reject) => {
-  //     logout(state.token).then(() => {
-  //       removeToken() // must remove  token  first
-  //       resetRouter()
-  //       commit('RESET_STATE')
-  //       resolve()
-  //     }).catch(error => {
-  //       reject(error)
-  //     })
-  //   })
-  // },
+  logout({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      logout(state.token).then(() => {
+        removeToken() // must remove  token  first
+        resetRouter()
+        commit('RESET_STATE')
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
 
   // remove token
   resetToken({ commit }) {

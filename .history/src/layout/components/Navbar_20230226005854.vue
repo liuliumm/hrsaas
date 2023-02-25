@@ -11,8 +11,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
-          <!-- //理解： 如果staffPhoto加载失败，则利用v-imagerror指令加载默认图片 -->
-          <i class="el-icon-caret-bottom" /><img :src="staffPhoto" v-imagerror="defaultImg" class="user-avatar">
+          <i class="el-icon-caret-bottom" /><img :src="staffPhoto" class="user-avatar">
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color:#fff" />
         </div>
@@ -45,12 +44,6 @@ export default {
     Breadcrumb,
     Hamburger
   },
-  data() {
-    return {
-      // 在js中使用图片, 需要将图片路径变为变量
-      defaultImg: require('@/assets/common/head.jpg')
-    }
-  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -64,16 +57,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout') //// 这里不论写不写 await 登出方法都是同步的（因为removeToken，removeUserInfo没有发起网络请求）
-      this.$router.push(`/login`) //跳转到登录页面
-      // 还可以使用如下代码
-                // import { mapGetters, createNamespacedHelpers  } from 'vuex'
-           //  //**createNamespacedHelpers**  创建基于某个命名空间辅助函数
-          //  // createNamespacedHelpers返回的是一个对象，针对user子模块的帮助对象
-          // const {  mapActions } = createNamespacedHelpers('user') // 这是的mapAction直接对应模块下的action辅助函数
-            // methods: {
-              // ...mapActions(['logout']),
-            // }
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

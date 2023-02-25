@@ -131,7 +131,7 @@ const actions = {
     context.commit('removeToken') // 不仅仅删除了vuex中的 还删除了缓存中的
     // 删除用户资料
     context.commit('removeUserInfo') // 删除用户信息
-  },
+  }
 
   // user logout
   // logout({ commit, state }) {

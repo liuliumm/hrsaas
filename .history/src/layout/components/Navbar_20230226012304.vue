@@ -64,16 +64,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout') //// 这里不论写不写 await 登出方法都是同步的（因为removeToken，removeUserInfo没有发起网络请求）
-      this.$router.push(`/login`) //跳转到登录页面
-      // 还可以使用如下代码
-                // import { mapGetters, createNamespacedHelpers  } from 'vuex'
-           //  //**createNamespacedHelpers**  创建基于某个命名空间辅助函数
-          //  // createNamespacedHelpers返回的是一个对象，针对user子模块的帮助对象
-          // const {  mapActions } = createNamespacedHelpers('user') // 这是的mapAction直接对应模块下的action辅助函数
-            // methods: {
-              // ...mapActions(['logout']),
-            // }
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

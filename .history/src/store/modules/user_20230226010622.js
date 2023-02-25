@@ -125,27 +125,19 @@ const actions = {
   //   })
   // },
 
-  // 登出的action（写在actions中）
-  logout(context) {
-    // 删除token
-    context.commit('removeToken') // 不仅仅删除了vuex中的 还删除了缓存中的
-    // 删除用户资料
-    context.commit('removeUserInfo') // 删除用户信息
-  },
-
   // user logout
-  // logout({ commit, state }) {
-  //   return new Promise((resolve, reject) => {
-  //     logout(state.token).then(() => {
-  //       removeToken() // must remove  token  first
-  //       resetRouter()
-  //       commit('RESET_STATE')
-  //       resolve()
-  //     }).catch(error => {
-  //       reject(error)
-  //     })
-  //   })
-  // },
+  logout({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      logout(state.token).then(() => {
+        removeToken() // must remove  token  first
+        resetRouter()
+        commit('RESET_STATE')
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
 
   // remove token
   resetToken({ commit }) {
