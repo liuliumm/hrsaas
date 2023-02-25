@@ -1,7 +1,5 @@
 // // 1、创建axios实例
 // // 1.1 引入axios
-import store from '@/store'
-import { config } from '@vue/test-utils'
 import axios from 'axios'
 const service = axios.create(// 1.2创建一个axios的实例
     { // 如果执行 npm run dev  值为 /api 正确  /api 这个代理只是给开发环境配置的代理
@@ -11,14 +9,7 @@ const service = axios.create(// 1.2创建一个axios的实例
     }
 )
 service.interceptors.request.use(// 请求拦截器
-    config => {
-        if (store.getters.token) {
-            config.headers['Authorization'] = `Bearer ${store.getters.token}`
-        }
-        return config // 必须返回配置
-    },error => {
-        return Promise.reject(error)
-    }
+
 )
 service.interceptors.response.use(// 响应拦截器
     response => {
