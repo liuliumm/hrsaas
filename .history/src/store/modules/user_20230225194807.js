@@ -15,15 +15,13 @@ import { resetRouter } from '@/router'
 // 初始化的时候从缓存中读取状态 并赋值到初始化的状态上
 // Vuex的持久化 如何实现 ？ Vuex和前端缓存相结合)
 const state = {  //在这里设置token为共享状态，初始化vuex时，先从缓存中读取
-  token: getToken(), // 设置token初始状态   token持久化 => 放到缓存中
-  userInfo: {} //定义一个空的对象,方便后面使用
+  token: getToken() // 设置token初始状态   token持久化 => 放到缓存中
 }
 // 修改状态
 const mutations = {
   // RESET_STATE: (state) => {
   //   Object.assign(state, getDefaultState())
   // },
-  // 设置用户信息
   setToken(state, token) {
   // SET_TOKEN: (state, token) => {
     // 将数据同步给token 
@@ -31,23 +29,17 @@ const mutations = {
     // vuex变化 => 缓存数据
     setToken(token) // vuex和 缓存数据的同步(注意这个setToken是从auth.js导入的)
   },
-  setUserInfo(state, userInfo) {
-    //state.userInfo = userInfo; // 这个也是响应式，直接修改对象本身的数据
-    //也可以如下写法：
-    state.userInfo = { ...userInfo } // 用 浅拷贝的方式去赋值对象 因为这样数据更新之后，才会触发组件的更新
-  },
-    // SET_NAME: (state, name) => {
-    //   state.name = name
-    // },
-    // SET_AVATAR: (state, avatar) => {
-    //   state.avatar = avatar
-    // }
- removeToken(state) {  // 删除缓存
+  // SET_NAME: (state, name) => {
+  //   state.name = name
+  // },
+  // SET_AVATAR: (state, avatar) => {
+  //   state.avatar = avatar
+  // }
+  // 删除缓存
+  removeToken(state) {
     state.token = null // 删除vuex的token
     removeToken() // 先清除 vuex  再清除缓存 vuex和 缓存数据的同步
-    state.userInfo = {}
-  },
-
+  }
 }
 // 执行异步
 // 封装登录的action
@@ -95,31 +87,26 @@ const actions = {
   // },
 
   // get user info
-  // 获取用户资料action  以下代码是异步操作，放入actions中
-  async getUserInfo (context) {
-    const result = await getUserInfo()  // 获取返回值
-    context.commit('setUserInfo', result) // 将整个的个人信息设置到用户的vuex数据中
-    return result //这里为什么要返回，为后面埋下伏笔
+  // getUserInfo
+  getUserInfo ({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getInfo(state.token).then(response => {
+        const { data } = response
+
+        if (!data) {
+          return reject('Verification failed, please Login again.')
+        }
+
+        const { name, avatar } = data
+
+        commit('SET_NAME', name)
+        commit('SET_AVATAR', avatar)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   },
-  // getInfo ({ commit, state }) {
-  //   return new Promise((resolve, reject) => {
-  //     getInfo(state.token).then(response => {
-  //       const { data } = response
-
-  //       if (!data) {
-  //         return reject('Verification failed, please Login again.')
-  //       }
-
-  //       const { name, avatar } = data
-
-  //       commit('SET_NAME', name)
-  //       commit('SET_AVATAR', avatar)
-  //       resolve(data)
-  //     }).catch(error => {
-  //       reject(error)
-  //     })
-  //   })
-  // },
 
   // user logout
   logout({ commit, state }) {
