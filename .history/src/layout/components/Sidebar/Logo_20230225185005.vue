@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sidebarLogoFade-enter-active {
+/ .sidebarLogoFade-enter-active {
   transition: opacity 1.5s;
 }
 
