@@ -59,7 +59,7 @@ service.interceptors.response.use(// 响应拦截器
             // 请求错误--举例：     1、路径写错  --此时可能服务器还会返回数据，并且success为false，但是状态码错误，会直接走response拦截器的error回调，就是下面的代码
 
         }
-    }, async error => { //token失效的被动处理，通过服务器传递的错误码作出处理
+    }, async error => {
         //判断错误码： error 有response对象 
         if (error.response && error.response.data && error.response.data.code === 10002) {
             // 后端告诉前端token超时了
